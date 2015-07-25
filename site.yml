@@ -1,0 +1,19 @@
+---
+
+# Example of a single host installation
+- hosts: 192.168.1.119
+  roles:
+    - role: mongodb
+      mongodb_net_bindIp: 127.0.0.1
+      mongodb_net_wireObjectCheck: false
+      mongodb_net_unixDomainSocket_enabled: true
+      mongodb_processManagement_fork: true
+      mongodb_systemLog_logAppend: true
+      mongodb_systemLog_timeStampFormat: iso8601-utc
+    - role: pulp
+      pulp_install_qpid: true
+      pulp_install_server: true
+      pulp_install_admin: true
+      pulp_install_consumer: true
+      pulp_run_celerybeat: true
+      pulp_run_resource_manager: true

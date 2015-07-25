@@ -1,6 +1,8 @@
 pulp
 ====
 
+https://github.com/picotrading/ansible-pulp
+
 Ansible role which installs and confiures the Pulp Project. The role was tested
 in single host installation but it should be possible to spread the Pulp service
 across multiple hosts and even use different messaging tool than Qpid (e.g.
@@ -17,6 +19,13 @@ Please report any issues or send PR.
 
 Example
 -------
+
+setup host http://pulp.homedns.org with ip of 192.168.1.119
+ssh-keygen
+
+ansible-playbook site.yml -i ../../Projects/hosts/hosts -K --sudo --limit 192.168.1.119 -vvvv   
+
+
 
 This role was tested with single-host setup only and this is the configuration
 which worked for me:
@@ -42,8 +51,16 @@ which worked for me:
       pulp_run_celerybeat: true
       pulp_run_resource_manager: true
 ```
+Make the following configurations
+Update the admin client configuration to point to the Pulp server. Keep in mind that because of the SSL verification, this should be the fully qualified name of the server, even if it is the same machine (localhost will not work with the default apache generated SSL certificate). 
 
-After everything is installed, you can use the following commands to create a clone of a repo:
+Regardless, the “host” setting below must match the “CN” value of the server’s HTTP SSL certificate. 
+This change is made globally to the /etc/pulp/admin/admin.conf file, or for one user in ~/.pulp/admin.conf:
+
+[server]
+host = localhost.localdomain
+
+After everything is installed and configured, you can use the following commands to create a clone of a repo:
 
 ```
 pulp-admin login -u admin -p admin
@@ -52,7 +69,7 @@ pulp-admin rpm repo sync run --repo-id=base-el6-64-extras-20150103
 pulp-admin rpm repo list
 ```
 
-The repo should then be accessible via URL `http://myhost/pulp/repos/`.
+The repo should then be accessible via URL `http://myhost/pulp/repos/` http://pulp.homedns.org.
 
 It should also be possible to use it in multi-host setup, although I did not test
 it. The setup should look something like this:
