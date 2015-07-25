@@ -1,7 +1,7 @@
 pulp
 ====
 
-https://github.com/picotrading/ansible-pulp
+Origin: https://github.com/picotrading/ansible-pulp
 
 Ansible role which installs and confiures the Pulp Project. The role was tested
 in single host installation but it should be possible to spread the Pulp service
